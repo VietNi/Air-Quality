@@ -15,7 +15,7 @@ app.set("view engine", "ejs");
 //app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(routes);
- await client.connect(function (err) {
+ client.connect(function (err) {
   assert.equal(null, err);
   console.log("connect suscessful");
   app.listen(app.get("port"), function () {
