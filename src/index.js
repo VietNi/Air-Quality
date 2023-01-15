@@ -15,7 +15,7 @@ app.set("view engine", "ejs");
 //app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(routes);
-client.connect(function (err) {
+ await client.connect(function (err) {
   assert.equal(null, err);
   console.log("connect suscessful");
   app.listen(app.get("port"), function () {
@@ -98,27 +98,27 @@ client_mqtt.on("connect", () => {
 });
 
 client_mqtt.on("message", (topic, payload) => {
-  MongoClient.connect(uri, function (err, db) {
+  MongoClient.connect(uri, async function (err, db) {
     if (err) throw err;
     var dbo = db.db("mydb");
     switch (topic) {
       case topic_mq7:
         var myobj = { Device: 'esp32', topic: topic_mq7, Value: payload.toString(), Unit: "ppm", Time: new Date() };
-        dbo.collection("data_mq7").insertOne(myobj, function (err, res) {
+         await dbo.collection("data_mq7").insertOne(myobj, function (err, res) {
           if (err) throw err;
           db.close();
         });
         break;
       case topic_humi:
         var myobj = { Device: 'esp32', topic: topic_humi, Value: payload.toString(), Unit: "%", Time: new Date() };
-        dbo.collection("data_humi").insertOne(myobj, function (err, res) {
+        await dbo.collection("data_humi").insertOne(myobj, function (err, res) {
           if (err) throw err;
           db.close();
         });
         break;
       case topic_temp:
         var myobj = { Device: 'esp32', topic: topic_temp, Value: payload.toString(), Unit: "°C", Time: new Date() };
-        dbo.collection("data_temp").insertOne(myobj, function (err, res) {
+        await dbo.collection("data_temp").insertOne(myobj, function (err, res) {
           if (err) throw err;
           db.close();
         });
