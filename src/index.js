@@ -15,13 +15,30 @@ app.set("view engine", "ejs");
 //app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(routes);
- client.connect(async function (err) {
-  assert.equal(null, err);
-  console.log("connect suscessful");
-   await app.listen(app.get("port"), function () {
-    console.log("server started on port " + app.get("port"));
-  });
-});
+//  client.connect(async function (err) {
+//   assert.equal(null, err);
+//   console.log("connect suscessful");
+//    await app.listen(app.get("port"), function () {
+//     console.log("server started on port " + app.get("port"));
+//   });
+// });
+
+const start = async () => {
+  try {
+    await client.connect( function (err) {
+        assert.equal(null, err);
+        console.log("connect suscessful");
+    })
+      app.listen(app.get("port"), function () {
+        console.log("server started on port " + app.get("port"));
+      });
+  } catch (error) {
+      console.log(error);
+      console.log("Failed to connect to the database, server is not running.");
+  }
+};
+
+start();
 
 //IndoorAirQualityMonitoringSystem
 
