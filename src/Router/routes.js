@@ -22,7 +22,7 @@ router.get("/home", async function (req, res) {
         const collection2 = db.collection("data_mq7");
         data_raw = await collection2.find({}).sort({ Time: -1 }).limit(1).toArray()
         data_home.co2 = JSON.stringify(data_raw).substring(85, 89)
-        res.render("../views/home", { "data_home": data_home })
+        res.render("../views/home.ejs", { "data_home": data_home })
 });
 
 router.get("/humi", async function (req, res) {
