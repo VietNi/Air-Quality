@@ -44,6 +44,9 @@
             <a class="nav-link active" aria-current="page" href="/home">Home</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/alert">Alert</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/temp">Temperature</a>
           </li>
           <li class="nav-item">
@@ -51,6 +54,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/gas">CO gas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/pm25">PM2.5</a>
           </li>
       </div>
     </div>
@@ -71,7 +77,7 @@
         <div class="card-body ">
           <h5 class="card-title fs-2">Air Quality</h5>
           <p class="card-text fs-3">CO Gas: <%= data_home.co2%> ppm</p>
-          <p class="card-text fs-3">PM2.5: </p>
+          <p class="card-text fs-3">PM2.5: <%= data_home.pm25%> µm/m3</p>
         </div>
       </div>
     </div>

@@ -9,7 +9,8 @@ let data_raw = {}
 let data_home = {
         humi: '',
         temp: '',
-        co2: ''
+        co2: '',
+        pm25: ''
 }
 router.get("/home", async function (req, res) {
         const db = client.db("mydb");
@@ -22,7 +23,27 @@ router.get("/home", async function (req, res) {
         const collection2 = db.collection("data_mq7");
         data_raw = await collection2.find({}).sort({ Time: -1 }).limit(1).toArray()
         data_home.co2 = JSON.stringify(data_raw).substring(85, 89)
+        const collection3 = db.collection("data_pm25");
+        data_raw = await collection3.find({}).sort({ Time: -1 }).limit(1).toArray()
+        data_home.pm25 = JSON.stringify(data_raw).substring(86, 91)
         res.render("../views/home.ejs", { "data_home": data_home })
+});
+
+router.get("/alert", async function (req, res) {
+        const db = client.db("mydb");
+        const collection = db.collection("data_humi");
+        data_raw = await collection.find({}).sort({ Time: -1 }).limit(1).toArray()
+        data_home.humi = JSON.stringify(data_raw).substring(86, 91)
+        const collection1 = db.collection("data_temp");
+        data_raw = await collection1.find({}).sort({ Time: -1 }).limit(1).toArray()
+        data_home.temp = JSON.stringify(data_raw).substring(86, 91)
+        const collection2 = db.collection("data_mq7");
+        data_raw = await collection2.find({}).sort({ Time: -1 }).limit(1).toArray()
+        data_home.co2 = JSON.stringify(data_raw).substring(85, 89)
+        const collection3 = db.collection("data_pm25");
+        data_raw = await collection3.find({}).sort({ Time: -1 }).limit(1).toArray()
+        data_home.pm25 = JSON.stringify(data_raw).substring(86, 91)
+        res.render("../views/alert.ejs", { "data_home": data_home })
 });
 
 router.get("/humi", async function (req, res) {
@@ -49,6 +70,15 @@ router.get("/gas", async function (req, res) {
         await collection.find({}).sort({ Time: -1 }).toArray(function (err, mq7_list) {
                 assert.equal(err, null);
                 res.render("../views/gas", { "data_mq7": mq7_list })
+        });
+});
+
+router.get("/pm25", async function (req, res) {
+        const db = client.db("mydb");
+        const collection = db.collection("data_pm25");
+        await collection.find({}).sort({ Time: -1 }).toArray(function (err, pm25_list) {
+                assert.equal(err, null);
+                res.render("../views/pm25", { "data_pm25": pm25_list })
         });
 });
 

@@ -1,36 +1,3 @@
-const express = require("express");
-const MongoClient = require('mongodb').MongoClient;
-const assert = require("assert");
-const path = require("path");
-const uri = "mongodb+srv://vietnguyen:500anhem@cluster0.6z4y7rp.mongodb.net/?retryWrites=true&w=majority";
-const home = require('./Router/home.js');
-const app = express();
-//const bodyParser = require("body-parser");
-
-const client = new MongoClient(uri);
-app.set("port", process.env.PORT || 10000);
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-//app.use(bodyParser.urlencoded({ extended: false }));
-app.use("/",home);
-
-const start = async () => {
-  try {
-    await client.connect( function (err) {
-        assert.equal(null, err);
-        console.log("connect suscessful");
-    })
-      app.listen(app.get("port"), function () {
-        console.log("server started on port " + app.get("port"));
-      });
-  } catch (error) {
-      console.log(error);
-      console.log("Failed to connect to the database, server is not running.");
-  }
-};
-start();
-
-
 const mqtt = require("mqtt");
 
 const host = "broker.emqx.io";
@@ -50,7 +17,6 @@ const client_mqtt = mqtt.connect(connectUrl, {
 const topic_mq7 = "esp32_pub_mq7";
 const topic_humi = "esp32_pub_humi";
 const topic_temp = "esp32_pub_temp";
-const topic_pm25 = "esp32_pub_pm25";
 client_mqtt.on("connect", () => {
   console.log("Connected");
   client_mqtt.subscribe([topic_mq7], () => {
@@ -61,9 +27,6 @@ client_mqtt.on("connect", () => {
   });
   client_mqtt.subscribe([topic_temp], () => {
     console.log(`Subscribe to topic '${topic_temp}'`);
-  });
-  client_mqtt.subscribe([topic_pm25], () => {
-    console.log(`Subscribe to topic '${topic_pm25}'`);
   });
 });
 
@@ -93,13 +56,8 @@ client_mqtt.on("message", (topic, payload) => {
           db.close();
         });
         break;
-        case topic_pm25:
-          var myobj = { Device: 'esp32', topic: topic_pm25, Value: payload.toString(), Unit: "µm/m3", Time: new Date() };
-          await dbo.collection("data_pm25").insertOne(myobj, function (err, res) {
-            if (err) throw err;
-            db.close();
-          });
-          break; 
     }
   });
 });
+
+module.exports ={}

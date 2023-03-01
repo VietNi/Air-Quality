@@ -45,7 +45,7 @@
 
   <div class="container">
     <div class="container">
-      <table id="table_co2" class="table table-bordered bg-light">
+      <table id="table_pm25" class="table table-bordered bg-light">
         <thead class="table-dark">
           <tr>
             <th scope="col">STT</th>
@@ -57,23 +57,23 @@
           </tr>
         </thead>
         <tbody>
-          <%data_mq7.forEach(function(mq7) {%>
+          <%data_pm25.forEach(function(pm25) {%>
             <tr>
               <td></td>
               <td>
-                <%= mq7.Device%>
+                <%= pm25.Device%>
               </td>
               <td>
-                <%= mq7.topic%>
+                <%= pm25.topic%>
               </td>
               <td>
-                <%= mq7.Value%>
+                <%= pm25.Value%>
               </td>
               <td>
-                <%= mq7.Unit%>
+                <%= pm25.Unit%>
               </td>
               <td>
-                <%= mq7.Time%>
+                <%= pm25.Time%>
               </td>
             </tr>
             <%})%>
@@ -87,7 +87,7 @@
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script>
       $(document).ready(function () {
-        var t = $('#table_co2').DataTable({
+        var t = $('#table_pm25').DataTable({
           columnDefs: [
             {
               searchable: false,
